@@ -31,6 +31,7 @@ body {
 h1 { margin: 0 0 8px; }
 .subtitle { margin: 0 0 16px; color: #b8c5eb; }
 .label { display: block; margin-bottom: 6px; font-weight: 600; }
+.label.inline { margin: 0; }
 
 textarea {
   width: 100%;
@@ -59,6 +60,36 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.chip {
+  margin-top: 0;
+  background: #172447;
+  border: 1px solid #355199;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+select {
+  background: #0c1431;
+  border: 1px solid #425187;
+  color: #edf3ff;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
 .results {
   margin-top: 18px;
   display: grid;
@@ -78,6 +109,22 @@ section h2 {
 }
 
 section p, li { color: #d8e2ff; }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.secondary {
+  background: #19295a;
+  border: 1px solid #4e69b6;
+}
+
+.copied {
+  color: #8ff2b0;
+  font-weight: 700;
+}
 
 .error { color: #ff9191; margin-top: 10px; }
 .done { display: flex; align-items: center; gap: 8px; margin-top: 8px; }

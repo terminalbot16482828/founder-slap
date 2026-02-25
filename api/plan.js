@@ -14,19 +14,28 @@ const DEFAULT_PRIORITIES = [
   'Publish one progress update to create accountability.'
 ];
 
-const ROASTS = [
+const LIGHT_ROASTS = [
   'You don\'t need more motivation. You need to click “start” and survive 10 focused minutes.',
   'Your to-do list isn\'t the bottleneck. Avoidance is.',
-  'You\'re one deploy away from momentum but acting like another tab will save you.',
+  'You\'re one deploy away from momentum but acting like another tab will save you.'
+];
+
+const SAVAGE_ROASTS = [
   'You can doomscroll after you ship. In that order.',
-  'Perfection is just procrastination wearing a startup hoodie.'
+  'Perfection is just procrastination wearing a startup hoodie.',
+  'You keep acting like planning is progress. It is not. Ship something.'
 ];
 
 function scoreRule(text, rule) {
   return rule.keywords.reduce((score, kw) => score + (text.includes(kw) ? 1 : 0), 0);
 }
 
-function buildPlan(rawInput) {
+function pickRoast(roastLevel) {
+  const pool = roastLevel === 'savage' ? SAVAGE_ROASTS : LIGHT_ROASTS;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function buildPlan(rawInput, roastLevel = 'light') {
   const input = (rawInput || '').toLowerCase();
   const scored = PRIORITY_RULES
     .map((rule) => ({ rule, score: scoreRule(input, rule) }))
@@ -49,12 +58,10 @@ function buildPlan(rawInput) {
     return 'Pick one task from Priority #1 and do exactly 10 focused minutes right now.';
   })();
 
-  const roast = ROASTS[Math.floor(Math.random() * ROASTS.length)];
-
   return {
     priorities: picked,
     tenMinuteStep,
-    roast,
+    roast: pickRoast(roastLevel),
     confidence: scored.length > 0 ? 'contextual' : 'default'
   };
 }
@@ -64,10 +71,10 @@ module.exports = (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { text } = req.body || {};
+  const { text, roastLevel } = req.body || {};
   if (!text || typeof text !== 'string' || text.trim().length < 8) {
     return res.status(400).json({ error: 'Please provide a longer thought (at least 8 chars).' });
   }
 
-  return res.status(200).json(buildPlan(text));
+  return res.status(200).json(buildPlan(text, roastLevel));
 };
